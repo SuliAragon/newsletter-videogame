@@ -1,16 +1,46 @@
 package Model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.Collection;
 
+@Entity
 public class Rol {
 
-    // id, rol, users
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "rol_id")
+    private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "rols")
-    // El conjunto de usuarios que tiene un rol concreto
-    private Collection<User> rols;
+    @Column(nullable = false, unique = true)
+    private String name; // El nombre del rol, por ejemplo: "ADMIN", "USER", etc.
+
+    @ManyToMany(mappedBy = "rols", cascade = CascadeType.ALL)
+    private Collection<User> users;
+
+    // Getters y Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
+    }
 }
