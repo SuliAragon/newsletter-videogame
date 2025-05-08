@@ -17,12 +17,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userDTO) {
         return ResponseEntity.ok(userService.saveUser(userDTO));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }

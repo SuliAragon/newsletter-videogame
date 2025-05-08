@@ -1,13 +1,13 @@
 services:
   brain-ai-vector-store:
-    container_name: board-game-training-db
+    container_name: tuRevistaDeVideojuegos
     image: "pgvector/pgvector:pg17"
     volumes:
       - ./postgres-dev-data/17/data:/var/lib/postgresql/data
     ports:
-      - "5490:5432"
+      - "5500:5432"
     expose:
-      - "5490"
+      - "5500"
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres" ]
       interval: 2s
@@ -15,6 +15,6 @@ services:
       retries: 5
     restart: always
     environment:
-      POSTGRES_DB: board-game-training-db
-      POSTGRES_USER: ${BOARD_GAME_TRAINING_DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${BOARD_GAME_TRAINING_DB_PASSWORD:-postgres}
+      POSTGRES_DB: tuRevistaDeVideojuegos
+      POSTGRES_USER: ${TUREVISTADEVIDEOJUEGOS_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${TUREVISTADEVIDEOJUEGOS_PASSWORD:-postgres}

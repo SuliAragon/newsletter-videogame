@@ -21,6 +21,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- Spring Boot Starter JPA for database integration -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -32,12 +38,6 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.5</version> <!-- Especifica una versión estable -->
-		</dependency>
-
-		<!-- Spring Boot Starter Security for authentication and authorization -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<!-- Spring Boot Starter Validation for input validation -->
