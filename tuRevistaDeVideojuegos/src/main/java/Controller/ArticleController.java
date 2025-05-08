@@ -19,13 +19,8 @@ public class ArticleController {
 
     @PostMapping("/")
     public ResponseEntity<> createArticle(@RequestBody DTORefencia DTODevuelve){
-        DTOReference createArticle = articleService.save(DTODevuelve)
+        DTOReference createArticle = articleService.save(DTODevuelve);
+        return new ResponseEntity<>(createArticle, HttpStatus.CREATED);
     }
 
-
-    @PostMapping("/")
-    public ResponseEntity<GameDTO> createGame(@RequestBody GameDTO gameDTO) {
-        GameDTO createdGame = gameService.createGame(gameDTO);
-        return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
-    }
 }
