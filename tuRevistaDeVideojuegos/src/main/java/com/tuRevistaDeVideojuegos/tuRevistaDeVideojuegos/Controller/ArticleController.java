@@ -1,0 +1,90 @@
+package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Controller;
+
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleRequestDTO;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.Article;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.User;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Service.ArticleService;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/articles")
+@CrossOrigin(origins = "*")
+
+public class ArticleController {
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Crear artículo
+    @PostMapping("/")
+    public ResponseEntity<?> createArticle(@RequestBody ArticleRequestDTO articleDTO){
+        User author = userRepository.findById(articleDTO.getUserId()).orElse(null);
+        if (author == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+        }
+
+        Article article = new Article();
+        article.setTitle(articleDTO.getTitle());
+        article.setContent(articleDTO.getContent());
+        article.setImg(articleDTO.getImg());
+        article.setAuthor(author);
+
+        Article savedArticle = articleService.save(article);
+        return new ResponseEntity<>(savedArticle, HttpStatus.CREATED);
+    }
+
+    // Obtener todos
+    @GetMapping("/")
+    public ResponseEntity<List<Article>> getAllArticles() {
+        List<Article> articles = articleService.getAllArticles();
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+    //Obtener por id
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getArticleById(@PathVariable Long id) {
+        Optional<Article> article = articleService.getArticleById(id);
+        if (article.isPresent()) {
+            return new ResponseEntity<>(article.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Article not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
+    // Actualizar artículo
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleRequestDTO dto) {
+        return articleService.getArticleById(id).map(existing -> {
+            if (dto.getTitle() != null) existing.setTitle(dto.getTitle());
+            if (dto.getContent() != null) existing.setContent(dto.getContent());
+            if (dto.getImg() != null) existing.setImg(dto.getImg());
+            if (dto.getUserId() != null) {
+                User user = userRepository.findById(dto.getUserId()).orElse(null);
+                if (user == null)
+                    return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+                existing.setAuthor(user);
+            }
+            Article updated = articleService.updateArticle(existing);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>("Article not found", HttpStatus.NOT_FOUND));
+    }
+
+    // Eliminar artículo
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteArticle(@PathVariable Long id) {
+        articleService.deleteArticle(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

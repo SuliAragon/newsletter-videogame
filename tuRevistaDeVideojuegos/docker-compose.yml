@@ -16,5 +16,5 @@ services:
     restart: always
     environment:
       POSTGRES_DB: tuRevistaDeVideojuegos
-      POSTGRES_USER: ${TUREVISTADEVIDEOJUEGOS_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${TUREVISTADEVIDEOJUEGOS_PASSWORD:-postgres}
+      POSTGRES_USER: postgres    #${TUREVISTADEVIDEOJUEGOS_USERNAME:-postgres}
+      POSTGRES_PASSWORD: postgres    #${TUREVISTADEVIDEOJUEGOS_PASSWORD:-postgres}
