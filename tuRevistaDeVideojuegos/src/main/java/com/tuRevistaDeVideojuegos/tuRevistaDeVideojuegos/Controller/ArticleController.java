@@ -2,6 +2,7 @@ package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Controller;
 
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleRequestDTO;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.Article;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.ArticleType;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.User;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Service.ArticleService;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Repository.UserRepository;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/articles")
@@ -39,6 +42,12 @@ public class ArticleController {
         article.setImg(articleDTO.getImg());
         article.setAuthor(author);
 
+        // Convertir los tipos de String a ArticleType
+        Set<ArticleType> types = articleDTO.getTypes().stream()
+                .map(ArticleType::valueOf)
+                .collect(Collectors.toSet());
+        article.setTypes(types);
+
         Article savedArticle = articleService.save(article);
         return new ResponseEntity<>(savedArticle, HttpStatus.CREATED);
     }
@@ -61,8 +70,6 @@ public class ArticleController {
         }
     }
 
-
-
     // Actualizar artículo
     @PutMapping("/{id}")
     public ResponseEntity<?> updateArticle(@PathVariable Long id, @RequestBody ArticleRequestDTO dto) {
@@ -76,6 +83,14 @@ public class ArticleController {
                     return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
                 existing.setAuthor(user);
             }
+            // Convertir los tipos de String a ArticleType
+            if (dto.getTypes() != null) {
+                Set<ArticleType> types = dto.getTypes().stream()
+                        .map(ArticleType::valueOf)
+                        .collect(Collectors.toSet());
+                existing.setTypes(types);
+            }
+
             Article updated = articleService.updateArticle(existing);
             return new ResponseEntity<>(updated, HttpStatus.OK);
         }).orElse(new ResponseEntity<>("Article not found", HttpStatus.NOT_FOUND));

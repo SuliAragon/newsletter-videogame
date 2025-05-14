@@ -7,13 +7,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
-
-import static com.sun.org.apache.xml.internal.serializer.Method.TEXT;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Article {
 
-    // id, fecha, fecha actualizacion, autor(user), titulo, contenido, img (string/ruta)
 
     @Id @GeneratedValue ( strategy = GenerationType.AUTO) @Column ( name = "article_id") // Autoincremental
     private Long id;
@@ -36,11 +35,18 @@ public class Article {
     @Column (nullable = false) // obligatorio
     private String title;
 
-    @Column (columnDefinition = TEXT)
+    @Column (columnDefinition = "TEXT")
     private String content;
 
     @Column (nullable = true)
     private String img;
+
+    @ElementCollection(fetch = FetchType.EAGER) // Es importante usar ElementCollection para colecciones de tipos simples
+    @CollectionTable(name = "article_types", joinColumns = @JoinColumn(name = "article_id"))
+    @Enumerated(EnumType.STRING) // Para almacenar los valores de ENUM como Strings
+    @Column(name = "type")
+    private Set<ArticleType> types;
+
 
     public Long getId() {
         return id;
@@ -97,6 +103,15 @@ public class Article {
     public void setImg(String img) {
         this.img = img;
     }
+
+    public Set<ArticleType> getTypes() {
+        return types;
+    }
+
+    public void setTypes(Set<ArticleType> types) {
+        this.types = types;
+    }
+
 }
 
 

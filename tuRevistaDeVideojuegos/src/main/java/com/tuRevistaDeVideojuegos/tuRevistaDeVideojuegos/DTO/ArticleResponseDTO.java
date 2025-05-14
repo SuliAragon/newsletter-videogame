@@ -1,6 +1,7 @@
 package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO;
 
 import java.util.Date;
+import java.util.Set;
 
 public class ArticleResponseDTO {
 
@@ -11,20 +12,9 @@ public class ArticleResponseDTO {
     private String authorName;
     private Date createDate;
     private Date updateDate;
+    private Set<String> types; // Agregado para devolver los tipos de artículo
 
-    public ArticleResponseDTO() {}
-
-    public ArticleResponseDTO(Long id, String title, String content, String img, String authorName, Date createDate, Date updateDate) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.img = img;
-        this.authorName = authorName;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-    }
-
-    // Getters y Setters
+    // Getters y setters
 
     public Long getId() { return id; }
 
@@ -53,4 +43,12 @@ public class ArticleResponseDTO {
     public Date getUpdateDate() { return updateDate; }
 
     public void setUpdateDate(Date updateDate) { this.updateDate = updateDate; }
+
+    public Set<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(Set<String> types) {
+        this.types = types;
+    }
 }

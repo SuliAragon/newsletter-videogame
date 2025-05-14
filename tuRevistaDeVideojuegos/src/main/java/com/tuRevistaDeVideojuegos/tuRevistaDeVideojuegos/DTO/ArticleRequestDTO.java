@@ -1,14 +1,14 @@
 package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO;
 
-public class ArticleRequestDTO {
+import java.util.Set;
 
-    // Solo necesito los no autogenerados o autoincrementales
-    // autor(user), titulo, contenido, img
+public class ArticleRequestDTO {
 
     private String title;
     private String content;
     private String img;
-    private Long userId; // ID del autor
+    private Long userId;  // ID del autor
+    private Set<String> types; // Tipos de artículo (por ejemplo, "INDIE", "NOTICIA", etc.)
 
     // Getters y setters
     public String getTitle() {
@@ -42,6 +42,12 @@ public class ArticleRequestDTO {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public Set<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(Set<String> types) {
+        this.types = types;
+    }
 }
-
-
