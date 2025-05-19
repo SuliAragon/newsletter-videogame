@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.sun.org.apache.xml.internal.serializer.Method.TEXT;
+
 @Entity
 public class Article {
 
@@ -35,7 +37,7 @@ public class Article {
     @Column (nullable = false) // obligatorio
     private String title;
 
-    @Column (columnDefinition = "TEXT")
+    @Column (columnDefinition = TEXT)
     private String content;
 
     @Column (nullable = true)

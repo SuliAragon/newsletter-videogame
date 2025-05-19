@@ -1,6 +1,7 @@
 package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Controller;
 
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleRequestDTO;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleResponseDTO;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.Article;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.ArticleType;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.User;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -64,11 +66,31 @@ public class ArticleController {
     public ResponseEntity<Object> getArticleById(@PathVariable Long id) {
         Optional<Article> article = articleService.getArticleById(id);
         if (article.isPresent()) {
-            return new ResponseEntity<>(article.get(), HttpStatus.OK);
+            Article a = article.get();
+
+            //xx` Creamos el DTO
+            ArticleResponseDTO dto = new ArticleResponseDTO();
+            dto.setId(a.getId());
+            dto.setTitle(a.getTitle());
+            dto.setContent(a.getContent());
+            dto.setImg(a.getImg());
+            dto.setCreateDate(a.getCreateDate());
+            dto.setUpdateDate(a.getUpdateDate());
+            dto.setAuthorName(a.getAuthor().getUsername()); // ✅ esto añade el nombre del autor
+
+            // Convertimos los enums a String
+            Set<String> typeStrings = new HashSet<>();
+            for (ArticleType type : a.getTypes()) {
+                typeStrings.add(type.name());
+            }
+            dto.setTypes(typeStrings);
+
+            return new ResponseEntity<>(dto, HttpStatus.OK); // ✅ devolvemos el DTO
         } else {
             return new ResponseEntity<>("Article not found", HttpStatus.NOT_FOUND);
         }
     }
+
 
     // Actualizar artículo
     @PutMapping("/{id}")

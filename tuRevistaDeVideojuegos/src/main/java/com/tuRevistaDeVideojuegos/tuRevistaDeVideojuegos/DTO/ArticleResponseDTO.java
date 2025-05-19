@@ -48,7 +48,6 @@ public class ArticleResponseDTO {
         return types;
     }
 
-    public void setTypes(Set<String> types) {
-        this.types = types;
-    }
+    public void setTypes(Set<String> types) { this.types = types; }
+
 }
