@@ -29,7 +29,7 @@ public class Article {
     @UpdateTimestamp // en el momento en el que haga una actualizacion se añade la hora
     private Date updateDate;
 
-    @JsonIgnore // evita que sea un bucle recursivo
+    // evita que sea un bucle recursivo
     @ManyToOne
     @JoinColumn (name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User author;

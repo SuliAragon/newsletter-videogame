@@ -13,11 +13,9 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    // Relación uno a muchos con los artículos
     @OneToMany(mappedBy = "author") // Cambié "user" por "author" para que coincida con el nombre en el modelo de artículo
     private Collection<Article> articles;
 
-    // Relación muchos a muchos con los roles
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_rol",
