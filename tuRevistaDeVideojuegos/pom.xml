@@ -19,7 +19,6 @@
 	<properties>
 		<java.version>24</java.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.h2database</groupId>

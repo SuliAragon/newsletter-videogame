@@ -32,6 +32,7 @@ public class Article {
     // evita que sea un bucle recursivo
     @ManyToOne
     @JoinColumn (name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JsonIgnore
     private User author;
 
     @Column (nullable = false) // obligatorio
