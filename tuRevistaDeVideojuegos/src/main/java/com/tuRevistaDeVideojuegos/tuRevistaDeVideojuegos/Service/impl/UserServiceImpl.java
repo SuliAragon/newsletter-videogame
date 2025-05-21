@@ -8,13 +8,14 @@ import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Repository.RolRepositor
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Repository.UserRepository;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class    UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RolRepository rolRepository;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword())); // Encripta contraseña
 
         if (dto.getRoleIds() != null) {
             Set<Rol> roles = new HashSet<>(rolRepository.findAllById(dto.getRoleIds()));
