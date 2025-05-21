@@ -1,6 +1,7 @@
 package com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Controller;
 
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleRequestDTO;
+import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.DTO.ArticleResponseDTO;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.Article;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.ArticleType;
 import com.tuRevistaDeVideojuegos.tuRevistaDeVideojuegos.Model.User;
@@ -63,8 +64,19 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getArticleById(@PathVariable Long id) {
         Optional<Article> article = articleService.getArticleById(id);
+
         if (article.isPresent()) {
-            return new ResponseEntity<>(article.get(), HttpStatus.OK);
+            ArticleResponseDTO respuesta = new ArticleResponseDTO();
+            respuesta.setUserId(article.get().getAuthor().getId());
+            respuesta.setId(article.get().getId());
+            respuesta.setImg(article.get().getImg());
+            respuesta.setContent(article.get().getContent());
+            respuesta.setCreateDate(article.get().getCreateDate());
+            //respuesta.setTypes(article.get().getTypes().stream().map(Stroi));
+            respuesta.setTitle(article.get().getTitle());
+            respuesta.setUpdateDate(article.get().getUpdateDate());
+            respuesta.setAuthorName(article.get().getAuthor().getUsername());
+            return new ResponseEntity<>(respuesta, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Article not found", HttpStatus.NOT_FOUND);
         }

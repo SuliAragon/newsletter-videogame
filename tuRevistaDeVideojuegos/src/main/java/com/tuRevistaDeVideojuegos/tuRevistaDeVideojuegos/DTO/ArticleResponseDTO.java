@@ -10,6 +10,16 @@ public class ArticleResponseDTO {
     private String content;
     private String img;
     private String authorName;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    private Long userId;
     private Date createDate;
     private Date updateDate;
     private Set<String> types; // Agregado para devolver los tipos de artículo
