@@ -31,7 +31,7 @@ public class    UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword())); // Encripta contraseña
 
         if (dto.getRoleIds() != null) {
             Set<Rol> roles = new HashSet<>(rolRepository.findAllById(dto.getRoleIds()));

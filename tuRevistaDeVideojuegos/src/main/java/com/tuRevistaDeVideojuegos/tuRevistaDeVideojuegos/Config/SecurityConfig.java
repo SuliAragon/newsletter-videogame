@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/roles/**").permitAll()
                         .requestMatchers("/authenticate").permitAll()
                         .anyRequest().authenticated()
+                        // Todas son accesible mientras que tienen los ** y el resto no
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
