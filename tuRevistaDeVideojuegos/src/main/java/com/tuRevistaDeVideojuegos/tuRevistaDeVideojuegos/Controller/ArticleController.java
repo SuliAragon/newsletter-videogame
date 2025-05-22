@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,6 +35,7 @@ public class ArticleController {
     // Crear artículo
     @PostMapping("/")
     public ResponseEntity<?> createArticle(@RequestBody ArticleRequestDTO articleDTO){
+        System.out.println("Llega petición para crear artículo");
         User author = userRepository.findById(articleDTO.getUserId()).orElse(null);
         if (author == null) {
             return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
@@ -124,4 +127,20 @@ public class ArticleController {
         articleService.deleteArticle(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/upload-image")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String folder = "public/img/";
+            String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
+            Path filepath = Paths.get(folder, filename);
+            Files.copy(file.getInputStream(), filepath);
+
+            String url = "/img/" + filename;
+            return ResponseEntity.ok(Collections.singletonMap("url", url));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir imagen");
+        }
+    }
 }
+
