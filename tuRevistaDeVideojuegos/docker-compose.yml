@@ -2,8 +2,8 @@ services:
   brain-ai-vector-store:
     container_name: tuRevistaDeVideojuegos
     image: "pgvector/pgvector:pg17"
-    volumes:
-      - ./postgres-dev-data/17/data:/var/lib/postgresql/data
+#    volumes:
+#      - ./postgres-dev-data/17/data:/var/lib/postgresql/data
     ports:
       - "5500:5432"
     expose:
